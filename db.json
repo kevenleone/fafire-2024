@@ -1,0 +1,41 @@
+{
+  "professors": [
+    {
+      "id": 1,
+      "name": "Fernando Cardoso",
+      "cpf": "12345678910",
+      "department": {
+        "id": 1,
+        "name": "Departamento de Matematica"
+      }
+    }
+  ],
+  "departments": [{ "id": 1, "name": "Departamento de Matematica" }],
+  "courses": [
+    {
+      "id": 1,
+      "name": "Matematica"
+    }
+  ],
+  "allocations": [
+    {
+      "id": 1,
+      "dayOfWeek": "MONDAY",
+      "startHour": "19:00:00",
+      "endHour": "23:00:00",
+      "professor": {
+        "id": 1,
+        "name": "Fernando Cardoso",
+        "cpf": "12345678910",
+        "department": {
+          "id": 1,
+          "name": "Departamento de Matematica"
+        }
+      },
+      "course": {
+        "id": 1,
+        "name": "Matematica"
+      }
+    }
+  ]
+}
