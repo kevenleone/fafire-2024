@@ -6,6 +6,8 @@ import Department from './pages/Department';
 import Home from './pages/Home';
 import Layout from './components/Layout';
 import Professor from './pages/Professor';
+import ProfessorForm from './pages/Professor/ProfessorForm';
+import Page from './components/Page';
 
 function AppRoutes() {
   return (
@@ -23,7 +25,17 @@ function AppRoutes() {
           <Route path='/allocation' element={<Allocation />} />
           <Route path='/course' element={<Course />} />
           <Route path='/department' element={<Department />} />
-          <Route path='/professor' element={<Professor />} />
+
+          <Route path='/professor'>
+            <Route index element={<Professor />} />
+            <Route path='create' element={<ProfessorForm />} />
+            <Route path=':id/update' element={<ProfessorForm />} />
+          </Route>
+
+          <Route
+            path='*'
+            element={<Page title='404...'>Page not found</Page>}
+          />
         </Route>
       </Routes>
     </BrowserRouter>

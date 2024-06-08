@@ -83,7 +83,8 @@ const DesktopNav = () => {
             <PopoverTrigger>
               <ChakraLink
                 p={2}
-                href={navItem.href ?? '#'}
+                as={Link}
+                to={navItem.href ?? '#'}
                 fontSize={'sm'}
                 fontWeight={500}
                 color={linkColor}
@@ -177,7 +178,7 @@ const MobileNavItem = ({ label, href }: NavItem) => {
       <Flex
         py={2}
         as={Link}
-        href={href ?? '#'}
+        to={href ?? '#'}
         justify={'space-between'}
         align={'center'}
         _hover={{

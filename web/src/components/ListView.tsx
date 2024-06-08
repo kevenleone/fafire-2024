@@ -1,7 +1,10 @@
-import { Button, useToast } from '@chakra-ui/react';
-import { ComponentProps, useEffect, useState } from 'react';
+import { Button, useToast, Spinner, Flex } from '@chakra-ui/react';
+import { ComponentProps } from 'react';
+import useSWR from 'swr';
 
+import env from '../utils/env';
 import Table from './Table';
+import { Link } from 'react-router-dom';
 
 interface ListViewProps {
   resource: string;
@@ -10,18 +13,22 @@ interface ListViewProps {
 
 function ListView(props: ListViewProps) {
   const toast = useToast();
-  const [rows, setRows] = useState([]);
+  const { data: rows = [], isLoading, mutate } = useSWR(props.resource);
 
-  async function handleDelete(row: any) {
+  async function handleDelete({ id }: any) {
     const response = await fetch(
-      `http://192.168.201.228:8080/${props.resource}/${row.id}`,
+      `${env.VITE_BACKEND_URL}/${props.resource}/${id}`,
       {
         method: 'DELETE',
       }
     );
 
     if (response.ok) {
-      await fetchData();
+      mutate((rows) => rows.filter((row) => row.id !== id), {
+        revalidate: false,
+      });
+
+      // setRows((rows) => rows.filter((row) => row.id !== id));
 
       return toast({
         title: `${props.resource} deleted with success.`,
@@ -40,16 +47,19 @@ function ListView(props: ListViewProps) {
     });
   }
 
-  const fetchData = () => {
-    fetch(`http://192.168.201.228:8080/${props.resource}`)
-      .then((response) => response.json())
-      .then((data) => setRows(data))
-      .catch(console.error);
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  if (isLoading) {
+    return (
+      <Flex justifyContent='center'>
+        <Spinner
+          thickness='4px'
+          speed='0.65s'
+          emptyColor='gray.200'
+          color='blue.500'
+          size='xl'
+        />
+      </Flex>
+    );
+  }
 
   return (
     <Table
@@ -61,7 +71,10 @@ function ListView(props: ListViewProps) {
           render: (_, row) => {
             return (
               <div>
-                <Button>Edit</Button>
+                <Button as={Link} to={`${row.id}/update`}>
+                  Edit
+                </Button>
+
                 <Button
                   marginLeft={4}
                   colorScheme='red'
